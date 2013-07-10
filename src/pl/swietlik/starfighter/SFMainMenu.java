@@ -5,12 +5,24 @@ import android.os.Bundle;
 import android.widget.ImageButton;
 import android.view.View.OnClickListener;
 import android.view.View;
+import android.content.Intent;
 
 public class SFMainMenu extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		
+		//start music background
+		SFEngine.musicThread = new Thread(){
+			public void run(){
+				Intent bgmusic = new Intent(getApplicationContext(),
+					SFMusic.class);
+				startService(bgmusic);
+				SFEngine.context = getApplicationContext();
+			}
+		};
+		SFEngine.musicThread.start();
 		
 		final SFEngine engine = new SFEngine();
 		

@@ -26,6 +26,10 @@
 			android:name="SFMainMenu"
             android:screenOrientation="portrait" >
         </activity>
+		
+		<service
+			android:name="SFMusic" >
+		</service>
     </application>
 
 </manifest>
