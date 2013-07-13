@@ -30,6 +30,10 @@
 		<service
 			android:name="SFMusic" >
 		</service>
+
+        <activity
+            android:name=".SFGame" >
+        </activity>
     </application>
 
 </manifest>

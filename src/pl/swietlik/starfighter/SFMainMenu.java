@@ -40,7 +40,8 @@ public class SFMainMenu extends Activity {
 			@Override
 			public void onClick(View v) {
 			// start game
-
+            Intent game = new Intent(getApplicationContext(), SFGame.class);
+                SFMainMenu.this.startActivity(game);
 			}
 		});
 		
