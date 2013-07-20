@@ -1,5 +1,6 @@
 package pl.swietlik.starfighter;
 
+import android.view.Display;
 import android.view.View;
 import android.content.Context;
 import android.content.Intent;
@@ -16,12 +17,12 @@ public class SFEngine {
 	public static final int GAME_THREAD_FPS_SLEEP = (1000 / 60);
     public static Context context;
 	public static Thread musicThread;
-    public static float SCROLL_BACKGROUND_1 = .001f;
+    public static Display display;
     public static final int BACKGROUND_LAYER_ONE = R.drawable.backgroundstars;
+    public static float SCROLL_BACKGROUND_1 = .001f;
     public static float SCROLL_BACKGROUND_2 = .007f;
     public static final int BACKGROUND_LAYER_TWO = R.drawable.debris;
-
-    public static final int playerFlightAction = 0;
+    public static int playerFlightAction = 0;
     public static final int PLAYER_SHIP = R.drawable.good_sprite;
     public static final int PLAYER_BANK_LEFT_1 = 1;
     public static final int PLAYER_RELASE = 3;

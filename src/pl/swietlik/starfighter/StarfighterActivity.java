@@ -1,9 +1,11 @@
 package pl.swietlik.starfighter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.content.Intent;
+import android.view.WindowManager;
 
 public class StarfighterActivity extends Activity
 {
@@ -11,6 +13,9 @@ public class StarfighterActivity extends Activity
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
+        SFEngine.display = ((WindowManager) getSystemService(Context.WINDOW_SERVICE))
+                .getDefaultDisplay();
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.splashscreen);
 
