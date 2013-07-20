@@ -28,7 +28,7 @@ public class SFEngine {
     public static final int PLAYER_BANK_RIGHT_1 = 4;
     public static final int PLAYER_FRAMES_BETWEEN_ANI = 9;
     public static final float PLAYER_BANK_SPEED = .1f;
-    public static float playerBankPosX = 1,75f;
+    public static float playerBankPosX = 1.75f;
 	
 	//closing game threads and exit game
 	public boolean onExit(View v) {

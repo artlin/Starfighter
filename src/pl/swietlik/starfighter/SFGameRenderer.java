@@ -26,11 +26,12 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
 
         scrollBackground1(gl);
         scrollBackground2(gl);
-
+		movePlayer1(gl);
+		
         // rest of printing methods will be call from here
 
         gl.glEnable(GL10.GL_BLEND);
-        gl.glBlendFunc(GL10.GL_ONE, GL10.GL_ONE);
+        gl.glBlendFunc(GL10.GL_ONE, GL10.GL_ONE_MINUS_SRC_ALPHA);
     }
 
     private void scrollBackground1(GL10 gl) {
@@ -79,10 +80,83 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
     private void movePlayer1(GL10 gl){
         switch (SFEngine.playerFlightAction) {
             case SFEngine.PLAYER_BANK_LEFT_1:
-                break;
+                gl.glMatrixMode(GL10.GL_MODELVIEW);
+				gl.glLoadIdentity();
+				gl.glPushMatrix();
+				gl.glScalef(.25f, .25f, 1f);
+				if(goodGuyBankFrames < SFEngine.PLAYER_FRAMES_BETWEEN_ANI &&
+						SFEngine.playerBankPosX > 0) {
+					SFEngine.playerBankPosX -= SFEngine.PLAYER_BANK_SPEED;
+					gl.glTranslatef(SFEngine.playerBankPosX, 0f, 0f);
+					gl.glMatrixMode(GL10.GL_TEXTURE);
+					gl.glLoadIdentity();
+					gl.glTranslatef(0.75f, 0.0f, 0.0f);
+					goodGuyBankFrames += 1;
+				} else if(goodGuyBankFrames >= SFEngine.PLAYER_FRAMES_BETWEEN_ANI
+							&& SFEngine.playerBankPosX > 0 ) {
+					SFEngine.playerBankPosX -= SFEngine.PLAYER_BANK_SPEED;
+					gl.glTranslatef(SFEngine.playerBankPosX, 0f, 0f);
+					gl.glMatrixMode(GL10.GL_TEXTURE);
+					gl.glLoadIdentity();
+					gl.glTranslatef(0.0f, 0.25f, 0.0f); 
+				} else {
+					gl.glTranslatef(SFEngine.playerBankPosX, 0f, 0f);
+					gl.glMatrixMode(GL10.GL_TEXTURE);
+					gl.glLoadIdentity();
+					gl.glTranslatef(0.0f, 0.0f, 0.0f);
+					goodGuyBankFrames = 0;
+				}	
+				player1.draw(gl);
+				gl.glPopMatrix();
+				gl.glLoadIdentity();
+				break;
             case SFEngine.PLAYER_BANK_RIGHT_1:
+				gl.glMatrixMode(GL10.GL_MODELVIEW);
+				gl.glLoadIdentity();
+				gl.glPushMatrix();
+				gl.glScalef(.25f, .25f, 1f);
+				if(goodGuyBankFrames < SFEngine.PLAYER_FRAMES_BETWEEN_ANI &&
+						SFEngine.playerBankPosX < 3 ) {
+					SFEngine.playerBankPosX += SFEngine.PLAYER_BANK_SPEED;
+					gl.glTranslatef(SFEngine.playerBankPosX, 0f, 0f);
+					gl.glMatrixMode(GL10.GL_TEXTURE);
+					gl.glLoadIdentity();
+					gl.glTranslatef(0.25f, 0.0f, 0.0f);
+					goodGuyBankFrames += 1;
+				} else if(goodGuyBankFrames >=
+						SFEngine.PLAYER_FRAMES_BETWEEN_ANI
+						&& SFEngine.playerBankPosX < 3 ) {
+					SFEngine.playerBankPosX += SFEngine.PLAYER_BANK_SPEED;
+					gl.glTranslatef(SFEngine.playerBankPosX, 0f, 0f);
+					gl.glMatrixMode(GL10.GL_TEXTURE);
+					gl.glLoadIdentity();
+					gl.glTranslatef(0.50f, 0.0f, 0.0f); 
+				} else {
+					gl.glTranslatef(SFEngine.playerBankPosX, 0f, 0f);
+					gl.glMatrixMode(GL10.GL_TEXTURE);
+					gl.glLoadIdentity();
+					gl.glTranslatef(0.0f, 0.0f, 0.0f);
+					goodGuyBankFrames = 0;
+				}	
+				player1.draw(gl);
+				gl.glPopMatrix();
+				gl.glLoadIdentity();
+				
                 break;
             case SFEngine.PLAYER_RELASE:
+				gl.glMatrixMode(GL10.GL_MODELVIEW);
+				gl.glLoadIdentity();
+                gl.glPushMatrix();
+                gl.glScalef(.25f, .25f, 1f);
+                gl.glTranslatef(SFEngine.playerBankPosX, 0f, 0f);
+                gl.glMatrixMode(GL10.GL_TEXTURE);
+                gl.glLoadIdentity();
+                gl.glTranslatef(0.0f, 0.0f, 0.0f);
+                player1.draw(gl);
+                gl.glPopMatrix();
+                gl.glLoadIdentity();
+				goodGuyBankFrames +=1;
+				
                 break;
             default:
                 gl.glMatrixMode(GL10.GL_MODELVIEW);
