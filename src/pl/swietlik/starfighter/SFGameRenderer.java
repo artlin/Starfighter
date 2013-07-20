@@ -9,6 +9,8 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
 
     private SFBackground background = new SFBackground();
     private SFBackground background2 = new SFBackground();
+    private SFGoodGuy player1 = new SFGoodGuy();
+    private int goodGuyBankFrames = 0;
 
     private float bgScroll1;
     private float bgScroll2;
@@ -74,6 +76,30 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
         gl.glLoadIdentity();
     }
 
+    private void movePlayer1(GL10 gl){
+        switch (SFEngine.playerFlightAction) {
+            case SFEngine.PLAYER_BANK_LEFT_1:
+                break;
+            case SFEngine.PLAYER_BANK_RIGHT_1:
+                break;
+            case SFEngine.PLAYER_RELASE:
+                break;
+            default:
+                gl.glMatrixMode(GL10.GL_MODELVIEW);
+                gl.glLoadIdentity();
+                gl.glPushMatrix();
+                gl.glScalef(.25f, .25f, 1f);
+                gl.glTranslatef(SFEngine.playerBankPosX, 0f, 0f);
+                gl.glMatrixMode(GL10.GL_TEXTURE);
+                gl.glLoadIdentity();
+                gl.glTranslatef(0.0f, 0.0f, 0.0f);
+                player1.draw(gl);
+                gl.glPopMatrix();
+                gl.glLoadIdentity();
+                break;
+        }
+    }
+
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         gl.glViewport(0, 0, width, height);
@@ -97,6 +123,7 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
                 SFEngine.context);
         background2.loadTexture(gl, SFEngine.BACKGROUND_LAYER_TWO,
                 SFEngine.context);
+        player1.loadTexture(gl, SFEngine.PLAYER_SHIP, SFEngine.context);
 
     }
 }
