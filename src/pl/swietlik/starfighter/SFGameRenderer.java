@@ -12,13 +12,20 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
     private SFGoodGuy player1 = new SFGoodGuy();
     private int goodGuyBankFrames = 0;
 
+    private long loopStart = 0;
+    private long loopEnd = 0;
+    private long loopRunTime = 0;
+
     private float bgScroll1;
     private float bgScroll2;
 
     @Override
     public void onDrawFrame(GL10 gl) {
+        loopStart = System.currentTimeMillis();
         try {
-            Thread.sleep(SFEngine.GAME_THREAD_FPS_SLEEP);
+            if(loopRunTime < SFEngine.GAME_THREAD_FPS_SLEEP) {
+                Thread.sleep(SFEngine.GAME_THREAD_FPS_SLEEP - loopRunTime);
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -32,6 +39,8 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
 
         gl.glEnable(GL10.GL_BLEND);
         gl.glBlendFunc(GL10.GL_ONE, GL10.GL_ONE_MINUS_SRC_ALPHA);
+        loopEnd = System.currentTimeMillis();
+        loopRunTime = (loopEnd - loopStart);
     }
 
     private void scrollBackground1(GL10 gl) {
