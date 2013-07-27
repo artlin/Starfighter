@@ -45,7 +45,7 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
                         SFEngine.ATTACK_RIGHT);
             } else {
                 scout = new SFEnemy(SFEngine.TYPE_SCOUT,
-                        SFEngine.ATTACK_LEFT)
+                        SFEngine.ATTACK_LEFT);
             }
             enemies[x] = scout;
         }
@@ -76,6 +76,7 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
         scrollBackground1(gl);
         scrollBackground2(gl);
 		movePlayer1(gl);
+        moveEnemy(gl);
 		
         // rest of printing methods will be call from here
 
@@ -157,7 +158,7 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
 					gl.glTranslatef(0.0f, 0.0f, 0.0f);
 					goodGuyBankFrames = 0;
 				}	
-				player1.draw(gl);
+				player1.draw(gl, spriteSheets);
 				gl.glPopMatrix();
 				gl.glLoadIdentity();
 				break;
@@ -189,7 +190,7 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
 					gl.glTranslatef(0.0f, 0.0f, 0.0f);
 					goodGuyBankFrames = 0;
 				}	
-				player1.draw(gl);
+				player1.draw(gl, spriteSheets);
 				gl.glPopMatrix();
 				gl.glLoadIdentity();
 				
@@ -203,7 +204,7 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
                 gl.glMatrixMode(GL10.GL_TEXTURE);
                 gl.glLoadIdentity();
                 gl.glTranslatef(0.0f, 0.0f, 0.0f);
-                player1.draw(gl);
+                player1.draw(gl, spriteSheets);
                 gl.glPopMatrix();
                 gl.glLoadIdentity();
 				goodGuyBankFrames +=1;
@@ -218,7 +219,7 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
                 gl.glMatrixMode(GL10.GL_TEXTURE);
                 gl.glLoadIdentity();
                 gl.glTranslatef(0.0f, 0.0f, 0.0f);
-                player1.draw(gl);
+                player1.draw(gl, spriteSheets);
                 gl.glPopMatrix();
                 gl.glLoadIdentity();
                 break;
@@ -264,7 +265,7 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
                         gl.glLoadIdentity();
                         break;
                     case SFEngine.TYPE_SCOUT:
-                        if(enemies[x].posY = 0) {
+                        if(enemies[x].posY <= 0) {
                             enemies[x].posY = (randomPos.nextFloat() * 4) + 4;
                             enemies[x].isLockedOn = false;
                             enemies[x].posT = SFEngine.SCOUT_SPEED;
@@ -297,6 +298,37 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
 
                         break;
                     case SFEngine.TYPE_WARSHIP:
+                        if(enemies[x].posY < 0){
+                            enemies[x].posY = (randomPos.nextFloat() * 4) + 4;
+                            enemies[x].posX = randomPos.nextFloat() * 3;
+                            enemies[x].isLockedOn = false;
+                            enemies[x].lockOnPosX = 0;
+                        }
+                        gl.glMatrixMode(GL10.GL_MODELVIEW);
+                        gl.glLoadIdentity();
+                        gl.glPushMatrix();
+                        gl.glScalef(.25f, .25f, 1f);
+                        if(enemies[x].posY >= 3) {
+                            enemies[x].posY -= SFEngine.WARSHIP_SPEED;
+                        } else {
+                            if(!enemies[x].isLockedOn) {
+                                enemies[x].lockOnPosX = randomPos.nextFloat() * 3;
+                                enemies[x].isLockedOn = true;
+                                enemies[x].incrementXToTarget =
+                                        (float) ((enemies[x].lockOnPosX - enemies[x].posX) /
+                                        (enemies[x].posY /
+                                        (SFEngine.WARSHIP_SPEED * 4)));
+                            }
+                            enemies[x].posY -= (SFEngine.WARSHIP_SPEED * 2);
+                            enemies[x].posX += enemies[x].incrementXToTarget;
+                        }
+                        gl.glTranslatef(enemies[x].posX, enemies[x].posY, 0f);
+                        gl.glMatrixMode(GL10.GL_TEXTURE);
+                        gl.glLoadIdentity();
+                        gl.glTranslatef(0.50f, .25f, 0.0f);
+                        enemies[x].draw(gl, spriteSheets);
+                        gl.glPopMatrix();
+                        gl.glLoadIdentity();
 
                         break;
                 }
@@ -334,7 +366,5 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
                 SFEngine.context);
         background2.loadTexture(gl, SFEngine.BACKGROUND_LAYER_TWO,
                 SFEngine.context);
-        player1.loadTexture(gl, SFEngine.PLAYER_SHIP, SFEngine.context);
-
     }
 }
