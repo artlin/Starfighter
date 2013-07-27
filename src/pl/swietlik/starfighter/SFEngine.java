@@ -25,8 +25,8 @@ public class SFEngine {
     public static final int PLAYER_FRAMES_BETWEEN_ANI = 9;
     public static final float PLAYER_BANK_SPEED = .1f;
     public static final int CHARACTERS_SHEET = R.drawable.character_sprite;
-    public static int TOTAL_INTERCEPTOR = 10;
-    public static int TOTAL_SCOUT = 15;
+    public static int TOTAL_INTERCEPTORS = 10;
+    public static int TOTAL_SCOUTS = 15;
     public static int TOTAL_WARSHIPS = 5;
     public static float INTERCEPTOR_SPEED = SCROLL_BACKGROUND_1 * 4f;
     public static float SCOUT_SPEED = SCROLL_BACKGROUND_1 * 6f;

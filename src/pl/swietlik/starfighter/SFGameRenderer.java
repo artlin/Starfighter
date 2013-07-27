@@ -12,12 +12,50 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
     private SFGoodGuy player1 = new SFGoodGuy();
     private int goodGuyBankFrames = 0;
 
+    private SFEnemy[] enemies = new SFEnemy[SFEngine.TOTAL_INTERCEPTORS
+            + SFEngine.TOTAL_SCOUTS + SFEngine.TOTAL_WARSHIPS];
+    private SFTextures textureLoader;
+    private int[] spriteSheets = new int[1];
+
     private long loopStart = 0;
     private long loopEnd = 0;
     private long loopRunTime = 0;
 
     private float bgScroll1;
     private float bgScroll2;
+
+    private void initializeInterceptors() {
+        for(int x = 0; x <= SFEngine.TOTAL_INTERCEPTORS - 1; x++) {
+            SFEnemy interceptor = new SFEnemy(SFEngine.TYPE_INTERCEPTOR,
+                    SFEngine.ATTACK_RANDOM);
+            enemies[x] = interceptor;
+        }
+    }
+
+    private void initializeScouts() {
+        for(int x = SFEngine.TOTAL_INTERCEPTORS; x <= SFEngine.TOTAL_INTERCEPTORS
+                + SFEngine.TOTAL_SCOUTS - 1; x++) {
+            SFEnemy scout;
+            if(x >= (SFEngine.TOTAL_INTERCEPTORS + SFEngine.TOTAL_SCOUTS) / 2) {
+                scout = new SFEnemy(SFEngine.TYPE_SCOUT,
+                        SFEngine.ATTACK_RIGHT);
+            } else {
+                scout = new SFEnemy(SFEngine.TYPE_SCOUT,
+                        SFEngine.ATTACK_LEFT)
+            }
+            enemies[x] = scout;
+        }
+    }
+
+    private void initializeWarships() {
+        for(int x = SFEngine.TOTAL_INTERCEPTORS + SFEngine.TOTAL_SCOUTS;
+                x <= SFEngine.TOTAL_INTERCEPTORS + SFEngine.TOTAL_SCOUTS
+                + SFEngine.TOTAL_WARSHIPS - 1; x++) {
+            SFEnemy warship = new SFEnemy(SFEngine.TYPE_WARSHIP,
+                    SFEngine.ATTACK_RANDOM);
+            enemies[x] = warship;
+        }
+    }
 
     @Override
     public void onDrawFrame(GL10 gl) {
@@ -194,6 +232,13 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+        initializeInterceptors();
+        initializeScouts();
+        initializeWarships();
+        textureLoader = new SFTextures(gl);
+        spriteSheets =  textureLoader.loadTexture(gl, SFEngine.CHARACTERS_SHEET,
+                SFEngine.context, 1);
+
         gl.glEnable(GL10.GL_TEXTURE_2D);
         gl.glClearDepthf(1.0f);
         gl.glEnable(GL10.GL_DEPTH_TEST);
