@@ -221,6 +221,26 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
         }
     }
 
+    private void moveEnemy(GL10 gl) {
+        for(int x = 0; x <= SFEngine.TOTAL_INTERCEPTORS
+                + SFEngine.TOTAL_SCOUTS
+                + SFEngine.TOTAL_WARSHIPS - 1; x++) {
+            if(!enemies[x].isDestroyed){
+                switch (enemies[x].enemyType) {
+                    case SFEngine.TYPE_INTERCEPTOR:
+
+                        break;
+                    case SFEngine.TYPE_SCOUT:
+
+                        break;
+                    case SFEngine.TYPE_WARSHIP:
+
+                        break;
+                }
+            }
+        }
+    }
+
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         gl.glViewport(0, 0, width, height);
