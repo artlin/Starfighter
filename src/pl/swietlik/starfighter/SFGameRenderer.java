@@ -2,6 +2,8 @@ package pl.swietlik.starfighter;
 
 import android.opengl.GLSurfaceView;
 
+import java.util.Random;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
@@ -16,6 +18,8 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
             + SFEngine.TOTAL_SCOUTS + SFEngine.TOTAL_WARSHIPS];
     private SFTextures textureLoader;
     private int[] spriteSheets = new int[1];
+
+    private Random randomPos = new Random();
 
     private long loopStart = 0;
     private long loopEnd = 0;
@@ -228,7 +232,36 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
             if(!enemies[x].isDestroyed){
                 switch (enemies[x].enemyType) {
                     case SFEngine.TYPE_INTERCEPTOR:
-
+                        if(enemies[x].posY <= 0) {
+                            enemies[x].posY = (randomPos.nextFloat() * 4) + 4;
+                            enemies[x].posX = randomPos.nextFloat() * 3;
+                            enemies[x].isLockedOn = false;
+                            enemies[x].lockOnPosX = 0;
+                        }
+                        gl.glMatrixMode(GL10.GL_MODELVIEW);
+                        gl.glLoadIdentity();
+                        gl.glPushMatrix();
+                        gl.glScalef(.25f, .25f, 1f);
+                        if(enemies[x].posY >= 3) {
+                            enemies[x].posY -= SFEngine.INTERCEPTOR_SPEED;
+                        } else {
+                            if(!enemies[x].isLockedOn) {
+                                enemies[x].lockOnPosX = SFEngine.playerBankPosX;
+                                enemies[x].isLockedOn = true;
+                                enemies[x].incrementXToTarget =
+                                        (float) ((enemies[x].lockOnPosX - enemies[x].posX)
+                                        / (enemies[x].posY / (SFEngine.INTERCEPTOR_SPEED * 4)));
+                            }
+                            enemies[x].posY -= (SFEngine.INTERCEPTOR_SPEED * 4);
+                            enemies[x].posX += enemies[x].incrementXToTarget;
+                        }
+                        gl.glTranslatef(enemies[x].posX, enemies[x].posY, 0f);
+                        gl.glMatrixMode(GL10.GL_TEXTURE);
+                        gl.glLoadIdentity();
+                        gl.glTranslatef(0.25f, .25f, 0.0f);
+                        enemies[x].draw(gl, spriteSheets);
+                        gl.glPopMatrix();
+                        gl.glLoadIdentity();
                         break;
                     case SFEngine.TYPE_SCOUT:
 
