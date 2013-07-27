@@ -264,6 +264,36 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
                         gl.glLoadIdentity();
                         break;
                     case SFEngine.TYPE_SCOUT:
+                        if(enemies[x].posY = 0) {
+                            enemies[x].posY = (randomPos.nextFloat() * 4) + 4;
+                            enemies[x].isLockedOn = false;
+                            enemies[x].posT = SFEngine.SCOUT_SPEED;
+                            enemies[x].lockOnPosX = enemies[x].getNextScoutX();
+                            enemies[x].lockOnPosY = enemies[x].getNextScoutY();
+                            if(enemies[x].attackDirection == SFEngine.ATTACK_LEFT) {
+                                enemies[x].posX = 0;
+                            } else {
+                                enemies[x].posX = 3f;
+                            }
+                        }
+                        gl.glMatrixMode(GL10.GL_MODELVIEW);
+                        gl.glLoadIdentity();
+                        gl.glPushMatrix();
+                        gl.glScalef(.25f, .25f, 1f);
+                        if(enemies[x].posY >= 2.75f){
+                            enemies[x].posY -= SFEngine.SCOUT_SPEED;
+                        } else {
+                            enemies[x].posX = enemies[x].getNextScoutX();
+                            enemies[x].posY = enemies[x].getNextScoutY();
+                            enemies[x].posT += SFEngine.SCOUT_SPEED;
+                        }
+                        gl.glTranslatef(enemies[x].posX, enemies[x].posY, 0f);
+                        gl.glMatrixMode(GL10.GL_TEXTURE);
+                        gl.glLoadIdentity();
+                        gl.glTranslatef(0.75f, .25f, 0.0f);
+                        enemies[x].draw(gl, spriteSheets);
+                        gl.glPopMatrix();
+                        gl.glLoadIdentity();
 
                         break;
                     case SFEngine.TYPE_WARSHIP:
