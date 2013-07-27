@@ -18,7 +18,6 @@ public class SFGoodGuy {
     private FloatBuffer vertexBuffer;
     private FloatBuffer textureBuffer;
     private ByteBuffer indexBuffer;
-    private int[] textures = new int[1];
 
     private float vertices[] = {
             0.0f, 0.0f, 0.0f,
@@ -57,8 +56,8 @@ public class SFGoodGuy {
         indexBuffer.position(0);
     }
 
-    public void draw(GL10 gl){
-        gl.glBindTexture(GL10.GL_TEXTURE_2D, textures[0]);
+    public void draw(GL10 gl, int[] spriteSheet){
+        gl.glBindTexture(GL10.GL_TEXTURE_2D, spriteSheet[0]);
         gl.glFrontFace(GL10.GL_CCW);
         gl.glEnable(GL10.GL_CULL_FACE);
         gl.glCullFace(GL10.GL_BACK);
