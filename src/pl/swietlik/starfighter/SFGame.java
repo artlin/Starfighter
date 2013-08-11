@@ -43,7 +43,7 @@ public class SFGame extends Activity {
                     }
                     break;
                 case MotionEvent.ACTION_UP:
-                    SFEngine.playerFlightAction = SFEngine.PLAYER_RELASE;
+                    SFEngine.playerFlightAction = SFEngine.PLAYER_RELEASE;
                     break;
             }
         }

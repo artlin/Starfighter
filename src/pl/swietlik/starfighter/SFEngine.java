@@ -20,11 +20,11 @@ public class SFEngine {
     public static float SCROLL_BACKGROUND_2 = .007f;
     public static final int BACKGROUND_LAYER_TWO = R.drawable.debris;
     public static final int PLAYER_BANK_LEFT_1 = 1;
-    public static final int PLAYER_RELASE = 3;
+    public static final int PLAYER_RELEASE = 3;
     public static final int PLAYER_BANK_RIGHT_1 = 4;
     public static final int PLAYER_FRAMES_BETWEEN_ANI = 9;
     public static final float PLAYER_BANK_SPEED = .1f;
-    public static final int CHARACTERS_SHEET = R.drawable.character_sprite;
+    public static final int CHARACTER_SHEET = R.drawable.character_sprite;
     public static int TOTAL_INTERCEPTORS = 10;
     public static int TOTAL_SCOUTS = 15;
     public static int TOTAL_WARSHIPS = 5;

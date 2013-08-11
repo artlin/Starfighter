@@ -15,6 +15,7 @@ public class SFEnemy {
     public float incrementYToTarget = 0f; // number of increments Y to achieve the goal
     public int attackDirection = 0; // direction from enemy ship attacks
     public boolean isDestroyed = false; // is enemy ship destroyed
+    private int damage = 0; // amount of absorb damage
     public int enemyType = 0; // with type is enemy ship
 
     public boolean isLockedOn = false; // is enemy ship locked the target
@@ -80,6 +81,27 @@ public class SFEnemy {
         indexBuffer = ByteBuffer.allocateDirect(indices.length);
         indexBuffer.put(indices);
         indexBuffer.position(0);
+    }
+
+    public void applyDamage() {
+        damage++;
+        switch(enemyType) {
+            case SFEngine.TYPE_INTERCEPTOR:
+                if(damage == SFEngine.INTERCEPTOR_SHIELDS) {
+                    isDestroyed = true;
+                }
+                break;
+            case SFEngine.TYPE_SCOUT:
+                if(damage == SFEngine.SCOUT_SHIELDS) {
+                    isDestroyed = true;
+                }
+                break;
+            case SFEngine.TYPE_WARSHIP:
+                if(damage == SFEngine.WARSHIP_SHIELDS) {
+                    isDestroyed = true;
+                }
+                break;
+        }
     }
 
     public float getNextScoutX() {
