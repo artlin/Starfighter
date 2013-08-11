@@ -36,7 +36,7 @@ public class SFWeapon {
     };
 
 
-    public SFWeapon(int type, int direction) {
+    public SFWeapon() {
 
         ByteBuffer byteBuf = ByteBuffer.allocateDirect(vertices.length * 4);
         byteBuf.order(ByteOrder.nativeOrder());

@@ -18,6 +18,7 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
             + SFEngine.TOTAL_SCOUTS + SFEngine.TOTAL_WARSHIPS];
     private SFTextures textureLoader;
     private int[] spriteSheets = new int[1];
+    private SFWeapon[] playerFire = new SFWeapon[4];
 
     private Random randomPos = new Random();
 
@@ -224,6 +225,7 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
                 gl.glLoadIdentity();
                 break;
         }
+        firePlayerWeapon(gl);
     }
 
     private void moveEnemy(GL10 gl) {
@@ -336,6 +338,56 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
         }
     }
 
+    private void initializePlayerWeapons() {
+        for(int x = 0; x < 4; x++) {
+            SFWeapon weapon = new SFWeapon();
+            playerFire[x] = weapon;
+        }
+
+        playerFire[0].shotFired = true;
+        playerFire[0].posX = SFEngine.playerBankPosX;
+        playerFire[0].posY = 1.25f;
+    }
+
+    private void firePlayerWeapon(GL10 gl) {
+        for(int x = 0; x < 4; x++) {
+            if(playerFire[x].shotFired) {
+                int nextShot = 0;
+                if(playerFire[x].posY > 4.25) {
+                    playerFire[x].shotFired = false;
+                } else {
+                    if(playerFire[x].posY > 2) {
+                        if(x == 3) {
+                            nextShot = 0;
+                        } else {
+                            nextShot = x + 1;
+                        }
+                        if(playerFire[nextShot].shotFired == false) {
+                            playerFire[nextShot].shotFired = true;
+                            playerFire[nextShot].posX = SFEngine.playerBankPosX;
+                            playerFire[nextShot].posY = 1.25f;
+                        }
+                    }
+
+                    playerFire[x].posY += SFEngine.PLAYER_BULLET_SPEED;
+                    gl.glMatrixMode(GL10.GL_MODELVIEW);
+                    gl.glLoadIdentity();
+                    gl.glPushMatrix();
+                    gl.glScalef(.25f, .25f, 0f);
+                    gl.glTranslatef(playerFire[x].posX, playerFire[x].posY, 0f);
+
+                    gl.glMatrixMode(GL10.GL_TEXTURE);
+                    gl.glLoadIdentity();
+                    gl.glTranslatef(0.0f, 0.0f, 0.0f);
+
+                    playerFire[x].draw(gl, spriteSheets);
+                    gl.glPopMatrix();
+                    gl.glLoadIdentity();
+                }
+            }
+        }
+    }
+
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
         gl.glViewport(0, 0, width, height);
@@ -353,6 +405,8 @@ public class SFGameRenderer implements GLSurfaceView.Renderer {
         textureLoader = new SFTextures(gl);
         spriteSheets =  textureLoader.loadTexture(gl, SFEngine.CHARACTERS_SHEET,
                 SFEngine.context, 1);
+        spriteSheets = textureLoader.loadTexture(gl, SFEngine.WEAPONS_SHEET,
+                SFEngine.context, 2);
 
         gl.glEnable(GL10.GL_TEXTURE_2D);
         gl.glClearDepthf(1.0f);
